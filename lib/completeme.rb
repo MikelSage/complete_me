@@ -19,13 +19,13 @@ class CompleteMe
   end
 
   def insert(word)
-    @trie = Trie.new unless @trie
+    # @trie = Trie.new unless @trie
     trie.insert(word)
     @count +=1
   end
 
   def suggest(substring)
-
+    trie.suggest(substring)
   end
 
   def populate(dictionary)

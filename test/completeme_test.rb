@@ -23,6 +23,7 @@ class CompleteMeTest < Minitest::Test
   def test_inserting_word_creates_trie
     completion = CompleteMe.new
     completion.insert("hello")
+    assert_instance_of Trie, completion.trie
     assert completion.trie
     assert completion.trie.root
   end
@@ -50,9 +51,40 @@ class CompleteMeTest < Minitest::Test
 
     assert completion.trie
     assert_equal 235886, completion.count
+    #check for word examples
   end
 
+# basic interaction model for suggest test
+  def test_suggest_returns_suggestions_for_piz
+    completion = CompleteMe.new
+    test_array = ["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]
+    dictionary = File.read("/usr/share/dict/words")
+    completion.populate(dictionary)
 
+    assert_equal test_array, completion.suggest('piz')
+  end
 
+  def test_suggest_for_small_trie
+    completion = CompleteMe.new
+    test_array = ['cat', 'car']
 
+    completion.insert('cat')
+    completion.insert('car')
+
+    assert_equal test_array, completion.suggest('ca')
+  end
+
+  def test_for_longer_branches
+    completion = CompleteMe.new
+    test_array = ['cat', 'catty', 'car', 'carry']
+
+    completion.insert('cat')
+    completion.insert('car')
+    completion.insert('catty')
+    completion.insert('carry')
+
+    assert_equal test_array, completion.suggest('ca')
+  end
+
+# start from the smaller class
 end

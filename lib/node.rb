@@ -24,16 +24,15 @@ class Node
     end
   end
 
-  # def count
-  #   last_letters = 0
-  #     @children.each do |key, child|
-  #       # binding.pry
-  #       if child.end_of_word
-  #         last_letters += 1
-  #         # child.count
-  #       end
-  #       child.count
-  #     end
-  #     last_letters
-  # end
+  def suggest(characters)
+  end
+
+  def end_of_substring(characters)
+    char_to_check = characters.shift
+    if characters.empty?
+      @children[char_to_check]
+    elsif @children.include?(char_to_check)
+      @children[char_to_check].end_of_substring(characters)
+    end
+  end
 end

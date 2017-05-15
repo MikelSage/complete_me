@@ -38,7 +38,6 @@ class TrieTest < Minitest::Test
 
     trie.insert('go')
     trie.insert('gone')
-
     assert trie.root.children['g'].children['o'].end_of_word
     assert trie.root.children['g'].children['o'].children['n'].children['e'].end_of_word
   end
