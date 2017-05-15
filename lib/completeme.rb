@@ -14,7 +14,7 @@ require "pry"
 class CompleteMe
   attr_reader :trie, :count
   def initialize
-    @trie = nil
+    @trie = Trie.new
     @count = 0
   end
 
@@ -28,8 +28,11 @@ class CompleteMe
 
   end
 
-  def populate(file)
-    
+  def populate(dictionary)
+    dictionary.split.each do |word|
+      trie.insert(word)
+      @count += 1
+    end
   end
 end
-binding.pry
+# binding.pry

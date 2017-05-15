@@ -15,10 +15,10 @@ require './lib/completeme'
 require 'pry'
 
 class CompleteMeTest < Minitest::Test
-  def test_trie_nil_by_default
-    completion = CompleteMe.new
-    assert_nil completion.trie
-  end
+  # def test_trie_nil_by_default
+  #   completion = CompleteMe.new
+  #   assert_nil completion.trie
+  # end
 
   def test_inserting_word_creates_trie
     completion = CompleteMe.new
@@ -43,10 +43,14 @@ class CompleteMeTest < Minitest::Test
     assert_equal 5, completion.count
   end
 
-  # def test_can_populate_trie_with_file
-  #   completion.CompleteMe.new
-  #   dictionary = File.read("/usr/share/dict/words")
-  #   completion.populate(dictionary)
+  def test_can_populate_trie_with_file
+    completion = CompleteMe.new
+    dictionary = File.read("/usr/share/dict/words")
+    completion.populate(dictionary)
+
+    assert completion.trie
+    assert_equal 235886, completion.count
+  end
 
 
 
