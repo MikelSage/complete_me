@@ -12,18 +12,16 @@ require "./lib/trie"
 require "pry"
 
 class CompleteMe
-  attr_reader :trie
+  attr_reader :trie, :count
   def initialize
     @trie = nil
+    @count = 0
   end
 
   def insert(word)
     @trie = Trie.new unless @trie
     trie.insert(word)
-  end
-
-  def count
-    @trie.count
+    @count +=1
   end
 
   def suggest(substring)
@@ -31,6 +29,7 @@ class CompleteMe
   end
 
   def populate(file)
-
+    
   end
 end
+binding.pry

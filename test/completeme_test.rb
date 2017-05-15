@@ -33,6 +33,22 @@ class CompleteMeTest < Minitest::Test
     assert_equal 1, completion.count
   end
 
+  def test_count_works_for_five_words
+    completion = CompleteMe.new
+    completion.insert("burger")
+    completion.insert("hotdog")
+    completion.insert("sandwich")
+    completion.insert("salad")
+    completion.insert("pasta")
+    assert_equal 5, completion.count
+  end
+
+  # def test_can_populate_trie_with_file
+  #   completion.CompleteMe.new
+  #   dictionary = File.read("/usr/share/dict/words")
+  #   completion.populate(dictionary)
+
+
 
 
 end
