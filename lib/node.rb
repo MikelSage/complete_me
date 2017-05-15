@@ -1,3 +1,5 @@
+require 'pry'
+
 class Node
   attr_reader :data, :children
   attr_accessor :end_of_word
@@ -21,4 +23,17 @@ class Node
       end
     end
   end
+
+  # def count
+  #   last_letters = 0
+  #     @children.each do |key, child|
+  #       # binding.pry
+  #       if child.end_of_word
+  #         last_letters += 1
+  #         # child.count
+  #       end
+  #       child.count
+  #     end
+  #     last_letters
+  # end
 end
