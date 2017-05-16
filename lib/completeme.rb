@@ -25,7 +25,25 @@ class CompleteMe
   end
 
   def suggest(substring)
-    trie.suggest(substring)
+    suggestions = []
+    node = @trie.root
+    last_node = node.end_of_substring(substring.chars)
+    find_all_the_words(last_node, substring, suggestions)
+    # suggestions = order_suggestions_by_weight(suggestions, substring)
+    suggestions
+  end
+
+  def find_all_the_words(node, substring, suggestions)
+    suggestions << substring if node.end_of_word
+    if node.has_children?
+      node.children.keys.each do |letter|
+        node_prefix = substring
+        node_prefix += letter
+        child_node = node.children[letter]
+        find_all_the_words(child_node, node_prefix, suggestions)
+      end
+    end
+    suggestions
   end
 
   def populate(dictionary)

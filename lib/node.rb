@@ -24,7 +24,8 @@ class Node
     end
   end
 
-  def suggest(characters)
+  def has_children?
+    !@children.empty?
   end
 
   def end_of_substring(characters)
