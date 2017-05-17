@@ -15,11 +15,6 @@ require './lib/completeme'
 require 'pry'
 
 class CompleteMeTest < Minitest::Test
-  # def test_trie_nil_by_default
-  #   completion = CompleteMe.new
-  #   assert_nil completion.trie
-  # end
-
   def test_inserting_word_creates_trie
     completion = CompleteMe.new
     completion.insert("hello")
@@ -54,16 +49,6 @@ class CompleteMeTest < Minitest::Test
     #check for word examples
   end
 
-# basic interaction model for suggest test
-  def test_suggest_returns_suggestions_for_piz
-    completion = CompleteMe.new
-    test_array = ["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]
-    dictionary = File.read("/usr/share/dict/words")
-    completion.populate(dictionary)
-
-    assert_equal test_array, completion.suggest('piz')
-  end
-
   def test_suggest_for_small_trie
     completion = CompleteMe.new
     test_array = ['cat', 'car']
@@ -86,5 +71,77 @@ class CompleteMeTest < Minitest::Test
     assert_equal test_array, completion.suggest('ca')
   end
 
-# start from the smaller class
+  def test_suggest_returns_suggestions_for_piz
+    completion = CompleteMe.new
+    test_array = ["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]
+    dictionary = File.read("/usr/share/dict/words")
+    completion.populate(dictionary)
+
+    assert_equal test_array, completion.suggest('piz')
+  end
+
+  # def test_select_returns_nil_for_invalid_selection
+  #   completion = CompleteMe.new
+  #   dictionary = File.read("/usr/share/dict/words")
+  #   completion.populate(dictionary)
+  #
+  #   assert_nil completion.select('piz', 'books')
+  #   assert_nil completion.select('piz', 'booze')
+  #   assert_nil completion.select('piz', 'pizxcv')
+  # end
+
+  def test_select_weights_one_word_correctly
+    completion = CompleteMe.new
+    dictionary = File.read("/usr/share/dict/words")
+    completion.populate(dictionary)
+    last_node = completion.trie.root.end_of_substring('piz'.chars)
+
+    assert_equal ({}), last_node.words
+
+    completion.select('piz', 'pizza')
+    assert_equal ({'pizza' => 1}), last_node.words
+  end
+
+  def test_select_weights_multiple_words_correctly
+    completion = CompleteMe.new
+    dictionary = File.read("/usr/share/dict/words")
+    completion.populate(dictionary)
+    last_node = completion.trie.root.end_of_substring('piz'.chars)
+    expected = {'pizza' => 1, 'pize' => 1, 'pizzle' => 1}
+
+    completion.select('piz', 'pizza')
+    completion.select('piz', 'pize')
+    completion.select('piz', 'pizzle')
+
+    assert_equal expected, last_node.words
+  end
+
+  def test_can_select_suggestion_more_than_once
+    completion = CompleteMe.new
+    dictionary = File.read("/usr/share/dict/words")
+    completion.populate(dictionary)
+    last_node = completion.trie.root.end_of_substring('piz'.chars)
+    expected = {'pizza' => 1, 'pize' => 2, 'pizzle' => 1}
+
+    completion.select('piz', 'pizza')
+    completion.select('piz', 'pize')
+    completion.select('piz', 'pizzle')
+    completion.select('piz', 'pize')
+
+    assert_equal expected, last_node.words
+  end
+
+  def test_suggest_returns_weighted_array
+    completion = CompleteMe.new
+    dictionary = File.read("/usr/share/dict/words")
+    completion.populate(dictionary)
+    expected = ['pize', 'pizzle', 'pizza', 'pizzeria', 'pizzicato']
+
+    completion.select('piz', 'pizza')
+    completion.select('piz', 'pize')
+    completion.select('piz', 'pizzle')
+    completion.select('piz', 'pize')
+
+    assert_equal expected, completion.suggest('piz')
+  end
 end

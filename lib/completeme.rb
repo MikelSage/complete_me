@@ -19,9 +19,15 @@ class CompleteMe
   end
 
   def insert(word)
-    # @trie = Trie.new unless @trie
     trie.insert(word)
     @count +=1
+  end
+
+  def populate(dictionary)
+    dictionary.split.each do |word|
+      trie.insert(word)
+      @count += 1
+    end
   end
 
   def suggest(substring)
@@ -29,7 +35,7 @@ class CompleteMe
     node = @trie.root
     last_node = node.end_of_substring(substring.chars)
     find_all_the_words(last_node, substring, suggestions)
-    # suggestions = order_suggestions_by_weight(suggestions, substring)
+    suggestions = order_suggestions_by_weight(suggestions, substring)
     suggestions
   end
 
@@ -46,11 +52,34 @@ class CompleteMe
     suggestions
   end
 
-  def populate(dictionary)
-    dictionary.split.each do |word|
-      trie.insert(word)
-      @count += 1
+  def select(substring, selection)
+    node = @trie.root
+    last_node = node.end_of_substring(substring.chars)
+
+    if last_node.words.has_key?(selection)
+      last_node.words[selection] += 1
+    else
+      last_node.words[selection] = 1
     end
   end
+
+  def order_suggestions_by_weight(suggestions, substring)
+    node = @trie.root
+    last_node = node.end_of_substring(substring.chars)
+
+    return suggestions if last_node.words.empty?
+
+    selected_words = sort_selected_words(last_node)
+
+    selected_words.each do |word|
+      suggestions.delete(word)
+    end
+
+    selected_words + suggestions
+  end
+
+  def sort_selected_words(node)
+    node.words.keys.sort_by{|val| node.words[val]}.reverse
+  end
+
 end
-# binding.pry

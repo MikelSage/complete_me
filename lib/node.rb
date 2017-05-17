@@ -2,10 +2,11 @@ require 'pry'
 
 class Node
   attr_reader :data, :children
-  attr_accessor :end_of_word
+  attr_accessor :end_of_word, :words
 
   def initialize(data)
     @data = data
+    @words = {}
     @children = {}
     @end_of_word = false
   end
