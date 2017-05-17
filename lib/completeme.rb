@@ -33,9 +33,9 @@ class CompleteMe
     if node.has_children?
       node.children.keys.each do |letter|
         node_substring = substring
-        node_prefix += letter
+        node_substring += letter
         next_node = node.children[letter]
-        find_all_the_words(next_node, node_prefix, suggestions)
+        find_all_the_words(next_node, node_substring, suggestions)
       end
     end
   end
@@ -66,6 +66,8 @@ class CompleteMe
     string.each_char do |letter|
       if current_node.in_children?(letter)
         current_node = current_node.children[letter]
+      else
+        return nil
       end
       return current_node if letter == string[-1]
     end

@@ -9,7 +9,7 @@ class Trie
   def insert(word)
     current_node = @root
     word.each_char do |letter|
-      if current_node.children.has_key?(letter)
+      if current_node.in_children?(letter)
         current_node = current_node.children[letter]
       else
         current_node.children[letter] = Node.new
