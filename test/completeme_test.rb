@@ -1,14 +1,3 @@
-
-#define a new class called CompleteMe
-  #define a method called insert that takes in a word as an argument
-    #word gets passed in and inserted into the tree
-  #define a method named count
-    #count returns how many words in the trie
-  #define a method called suggest that takes in a substring as an argument
-    #it returns an array of possible suggestions of the substring
-  #define a method called populate that takes in a variable that holds a file
-    #takes words in the file and inserts it into the trie
-
 require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/completeme'
@@ -94,7 +83,7 @@ class CompleteMeTest < Minitest::Test
     completion = CompleteMe.new
     dictionary = File.read("/usr/share/dict/words")
     completion.populate(dictionary)
-    last_node = completion.trie.root.end_of_substring('piz'.chars)
+    last_node = completion.find_last_node('piz')
 
     assert_equal ({}), last_node.words
 
@@ -106,7 +95,7 @@ class CompleteMeTest < Minitest::Test
     completion = CompleteMe.new
     dictionary = File.read("/usr/share/dict/words")
     completion.populate(dictionary)
-    last_node = completion.trie.root.end_of_substring('piz'.chars)
+    last_node = completion.find_last_node('piz')
     expected = {'pizza' => 1, 'pize' => 1, 'pizzle' => 1}
 
     completion.select('piz', 'pizza')
@@ -120,7 +109,7 @@ class CompleteMeTest < Minitest::Test
     completion = CompleteMe.new
     dictionary = File.read("/usr/share/dict/words")
     completion.populate(dictionary)
-    last_node = completion.trie.root.end_of_substring('piz'.chars)
+    last_node = completion.find_last_node('piz')
     expected = {'pizza' => 1, 'pize' => 2, 'pizzle' => 1}
 
     completion.select('piz', 'pizza')

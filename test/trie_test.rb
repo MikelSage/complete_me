@@ -4,12 +4,6 @@ require "./lib/trie"
 require "pry"
 
 class TrieTest < Minitest::Test
-  def test_root_nil_by_default
-    trie = Trie.new
-
-    assert_nil trie.root
-  end
-
   def test_root_has_children_on_same_level
     trie = Trie.new
 
@@ -27,8 +21,6 @@ class TrieTest < Minitest::Test
     trie.insert('bad')
     trie.insert('cut')
     trie.insert('dog')
-
-    # binding.pry
 
     assert_equal test_child_keys, trie.root.children.keys
   end
