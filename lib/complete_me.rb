@@ -1,5 +1,4 @@
 require "./lib/trie"
-require "pry"
 
 class CompleteMe
   attr_reader :trie, :count
@@ -24,6 +23,7 @@ class CompleteMe
     suggestions = []
     last_node   = find_last_node(substring)
     find_all_the_words(last_node, substring, suggestions)
+
     suggestions = order_suggestions_by_weight(suggestions, substring)
     suggestions
   end
@@ -32,8 +32,7 @@ class CompleteMe
     suggestions << substring if node.end_of_word
     if node.has_children?
       node.children.keys.each do |letter|
-        node_substring = substring
-        node_substring += letter
+        node_substring = substring + letter
         next_node = node.children[letter]
         find_all_the_words(next_node, node_substring, suggestions)
       end
@@ -41,6 +40,7 @@ class CompleteMe
   end
 
   def select(substring, selection)
+    return nil unless selection_valid?(substring, selection)
     last_node = find_last_node(substring)
     if last_node.was_selected?(selection)
       last_node.words[selection] += 1
@@ -66,11 +66,13 @@ class CompleteMe
     string.each_char do |letter|
       if current_node.in_children?(letter)
         current_node = current_node.children[letter]
-      else
-        return nil
       end
-      return current_node if letter == string[-1]
     end
+    return current_node
   end
 
+  def selection_valid?(substring, selection)
+    suggestions = suggest(substring)
+    suggestions.include?(selection)
+  end
 end

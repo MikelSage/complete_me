@@ -1,5 +1,5 @@
 require "./lib/node"
-require "pry"
+
 class Trie
   attr_reader :root
   def initialize
