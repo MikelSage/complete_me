@@ -1,4 +1,4 @@
-require "./lib/node"
+require_relative "node"
 
 class Trie
   attr_reader :root
@@ -15,8 +15,8 @@ class Trie
         current_node.children[letter] = Node.new
         current_node = current_node.children[letter]
       end
-      current_node.end_of_word = true if word[-1] == letter
     end
+    current_node.end_of_word = true
   end
 
 end

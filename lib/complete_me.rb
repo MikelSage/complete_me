@@ -1,4 +1,4 @@
-require "./lib/trie"
+require_relative "trie"
 
 class CompleteMe
   attr_reader :trie, :count

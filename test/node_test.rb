@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
-require './lib/node'
+require_relative '../lib/node'
 
 class NodeTest < Minitest::Test
   def test_has_no_children_by_default

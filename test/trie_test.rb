@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require "minitest/pride"
-require "./lib/trie"
+require_relative "../lib/trie"
 require "pry"
 
 class TrieTest < Minitest::Test
