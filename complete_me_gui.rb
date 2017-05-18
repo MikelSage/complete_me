@@ -18,9 +18,9 @@ Shoes.app(title: "CompleteMe",
       end
     end
     flow do
-      style(:margin_left => 412, :left => '-25%', :margin_top => 400, :width => 800)
+      style(:margin_left => 380, :left => '-25%', :margin_top => 400, :height => 200)
       @edit = edit_line
-      button "Add" do
+      button "Suggest" do
         @slot.clear if @slot
         @suggestions = completion.suggest(@edit.text)
         @slot = flow do
